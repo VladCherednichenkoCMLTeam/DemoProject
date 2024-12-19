@@ -25,7 +25,8 @@ describe('UploadService', () => {
         {
           provide: OpenaiService,
           useValue: {
-            getEmbeddingForText: jest.fn().mockResolvedValue([0.1, 0.2, 0.3]), // Mocked embedding
+            getEmbeddingForText: jest.fn().mockResolvedValue([0.1, 0.2, 0.3]),
+            generateAnswerCompletion: jest.fn().mockResolvedValue('Sample PDF text'),
           },
         },
       ],

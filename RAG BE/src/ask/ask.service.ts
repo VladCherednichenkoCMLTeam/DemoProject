@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { QdrantService } from '../qdrant/qdrant.service';
 import { OpenaiService } from '../openai/openai.service';
 import OpenAI, { OpenAIError } from 'openai';
-import { extractJSON } from 'src/utils/extractJsonFromText';
+import { extractJSON } from '../utils/extractJsonFromText';
 
 @Injectable()
 export class AskService {
@@ -43,7 +43,7 @@ export class AskService {
     const { answer, threadId: threadId } = await this.openaiService.generateAnswerInThread(prompt, chatThreadId, onDelta, onEnd, onError, uniqueSources);
 
     this.logger.log(`Answer: ${answer}`);
-    return { answer, sources: [], threadId: threadId };
+    return { answer, sources: uniqueSources, threadId: threadId };
   }
 
   async getSuggestionForClient(question: string, answer: string): Promise<string[]> {

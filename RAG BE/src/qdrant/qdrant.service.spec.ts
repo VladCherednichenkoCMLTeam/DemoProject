@@ -70,7 +70,7 @@ describe('QdrantService', () => {
 
     expect(clientMock.search).toHaveBeenCalledWith(service['collectionName'], {
       vector: queryVector,
-      limit: 5,
+      limit: 15,
     });
     expect(result).toEqual(searchResult);
   });

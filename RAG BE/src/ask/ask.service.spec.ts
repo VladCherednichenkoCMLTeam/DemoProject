@@ -7,9 +7,15 @@ import { AppConfigModule } from '../config/config.module';
 describe('AskService', () => {
   let service: AskService;
   let qdrantService: QdrantService;
-  let openaiService: OpenaiService;
+  let openaiService: { generateAnswerCompletion: jest.Mock, getEmbeddingForText: jest.Mock, generateAnswerInThread: jest.Mock };
 
   beforeEach(async () => {
+    openaiService = {
+      generateAnswerCompletion: jest.fn().mockResolvedValue('mocked answer'),
+      getEmbeddingForText: jest.fn().mockResolvedValue([0.1, 0.2, 0.3]),
+      generateAnswerInThread: jest.fn().mockResolvedValue({ answer: 'answer', sources: ['source'], threadId: 'threadId' }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppConfigModule],
       providers: [
@@ -22,17 +28,13 @@ describe('AskService', () => {
         },
         {
           provide: OpenaiService,
-          useValue: {
-            getEmbeddingForText: jest.fn().mockResolvedValue([0.1, 0.2, 0.3]),
-            generateAnswer: jest.fn().mockResolvedValue({ answer: 'answer', sources: ['source'], threadId: 'threadId' }),
-          },
+          useValue: openaiService,
         },
       ],
     }).compile();
 
     service = module.get<AskService>(AskService);
     qdrantService = module.get<QdrantService>(QdrantService);
-    openaiService = module.get<OpenaiService>(OpenaiService);
   });
 
   it('should return an answer and sources', async () => {

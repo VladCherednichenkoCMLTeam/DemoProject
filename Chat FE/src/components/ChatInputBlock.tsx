@@ -3,15 +3,18 @@ import { Button } from "@/components/ui/button";
 import { ArrowUp, Paperclip } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { motion } from "motion/react";
+import ChatSuggestionsBlock from "./ChatSuggestionsBlosk";
 
 type Props = {
   onSubmit: (value: string) => Promise<void>;
   onAttach: (files: File[]) => Promise<void>;
-  isGenerating: boolean;
+  isLoading: boolean;
+  suggestionsLoading: boolean;
+  suggestions: string[];
 };
 
 const ChatInputBlock = forwardRef<HTMLFormElement, Props>(
-  ({ isGenerating, onSubmit, onAttach }, ref) => {
+  ({ isLoading, onSubmit, onAttach, suggestions, suggestionsLoading }, ref) => {
     const [inputValue, setInputValue] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -34,7 +37,7 @@ const ChatInputBlock = forwardRef<HTMLFormElement, Props>(
       if (e.shiftKey || e.key !== "Enter") return;
       e.preventDefault();
 
-      if (isGenerating || !inputValue) return;
+      if (isLoading || !inputValue) return;
       setInputValue("");
       await onSubmit(inputValue);
     };
@@ -73,6 +76,7 @@ const ChatInputBlock = forwardRef<HTMLFormElement, Props>(
             placeholder="Type your message here..."
             className="min-h-5 max-h-20 resize-none rounded-lg bg-transparent border-0 py-3 px-4 shadow-none focus-visible:ring-0"
           />
+
           <div className="flex items-center p-3 pt-0" onClick={handleTextareaFocus}>
             <motion.div whileTap={{ scale: 0.9 }}>
               <Button variant="ghost" size="icon" onClick={handleAttachClick} className="hidden">
@@ -90,7 +94,7 @@ const ChatInputBlock = forwardRef<HTMLFormElement, Props>(
             />
             <motion.div whileTap={{ scale: 0.9 }} className="ml-auto gap-1.5">
               <Button
-                disabled={!inputValue || isGenerating}
+                disabled={!inputValue || isLoading}
                 type="submit"
                 size="sm"
                 className="rounded-full w-10 h-10"
@@ -100,6 +104,12 @@ const ChatInputBlock = forwardRef<HTMLFormElement, Props>(
             </motion.div>
           </div>
         </form>
+        <ChatSuggestionsBlock
+          isGenerating={isLoading}
+          onSubmit={onSubmit}
+          suggestions={suggestions}
+          suggestionsLoading={suggestionsLoading}
+        />
       </div>
     );
   }

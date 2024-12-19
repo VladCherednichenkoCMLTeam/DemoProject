@@ -9,11 +9,11 @@ import Loader from "../ui/Loader/Loader";
 
 type Props = {
   messages: ChatMessage[];
-  isGenerating: boolean;
+  isLoading: boolean;
 };
 
 const MessagesList = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { isGenerating, messages } = props;
+  const { isLoading, messages } = props;
 
   return (
     <ChatMessageList ref={ref} className="scroll-smooth">
@@ -24,7 +24,7 @@ const MessagesList = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <MessagesItem key={message.id} message={message} />
         ))}
 
-      {isGenerating && (
+      {isLoading && (
         <ChatBubble variant="received">
           <Loader />
         </ChatBubble>

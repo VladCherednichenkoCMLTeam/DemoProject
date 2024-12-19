@@ -14,7 +14,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-
   render() {
     if (this.state.hasError) {
       return <div className="text-red-500">Something went wrong!</div>;

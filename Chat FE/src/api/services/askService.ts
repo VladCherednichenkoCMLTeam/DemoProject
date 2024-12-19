@@ -5,3 +5,8 @@ export const askQuestion = async (question: string, threadId?: string | null): P
   const response = await axiosInstance.post<AskResponse>("/ask", { question, threadId });
   return response.data;
 };
+
+export const getSuggestions = async (question: string, answer: string): Promise<string[]> => {
+  const response = await axiosInstance.post<string[]>("/ask/suggestions", { question, answer });
+  return response.data;
+};

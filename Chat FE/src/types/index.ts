@@ -6,6 +6,7 @@ export interface FileResponse {
 export interface AskResponse {
   answer: string;
   sources: string[];
+  chatgpt_questions_suggestions?: string[];
   threadId: string;
 }
 
@@ -20,5 +21,6 @@ export type ChatMessage = {
   createdAt?: Date;
   content: string;
   sources?: string[];
+  generating: boolean;
   role: Roles,
 }

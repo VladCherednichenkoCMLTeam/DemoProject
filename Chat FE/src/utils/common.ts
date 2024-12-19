@@ -7,6 +7,7 @@ export const responseToMessage = (res: AskResponse): ChatMessage => {
     content: res.answer,
     sources: res.sources,
     role: Roles.assistant,
+    generating: true,
   }
 }
 
@@ -15,5 +16,6 @@ export const questionToMessage = (question: string): ChatMessage => {
     id: uuidv4(),
     content: question,
     role: Roles.user,
+    generating: false,
   }
 }  

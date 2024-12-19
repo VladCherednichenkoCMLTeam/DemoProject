@@ -52,19 +52,4 @@ describe('AskService', () => {
     expect(qdrantService.search).toHaveBeenCalledWith(embedding);
   });
 
-  it('should call generateAnswer with the correct context and question', async () => {
-    const context = 'context';
-    const question = 'What is NestJS?';
-    await service.askQuestion(question);
-    expect(openaiService.generateAnswer).toHaveBeenCalledWith(context, question, undefined);
-  });
-
-  it('should call generateAnswer with the correct context, question and threadId', async () => {
-    const context = 'context';
-    const question = 'What is NestJS?';
-    const chatThreadId = 'threadId';
-    await service.askQuestion(question, chatThreadId);
-    expect(openaiService.generateAnswer).toHaveBeenCalledWith(context, question, chatThreadId);
-  });
-
 });

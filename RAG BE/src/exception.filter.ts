@@ -3,7 +3,8 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  Logger
+  Logger,
+  NotFoundException
 } from '@nestjs/common';
 
 @Catch()
@@ -24,6 +25,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       } else {
         message = response;
       }
+    } else if (exception instanceof NotFoundException) {
+      status = 404;
+      message = 'Resource Not Found';
     } else if (exception instanceof Error) {
       status = 400;
       message = exception.message || exception.name;
@@ -32,7 +36,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = 'Internal Server Error';
     }
 
-    if (exception instanceof Error) {
+    if (exception instanceof Error && !(exception instanceof NotFoundException)) {
       this.logger.error(`HTTP Status: ${status} Error Message: ${message}`, exception.stack);
     } else {
       this.logger.error(`HTTP Status: ${status} Error Message: ${message}`);

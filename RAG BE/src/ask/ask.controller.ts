@@ -12,4 +12,10 @@ export class AskController {
     this.logger.log(`Question asked: ${question}`);
     return this.askService.askQuestion(question, threadId);
   }
+
+  @Post('/suggestions')
+  async getSuggestions(@Body('question') question: string, @Body('answer') answer: string): Promise<string[]> {
+    this.logger.log(`Suggestions asked for: ${question}`);
+    return this.askService.getSuggestionForClient(question, answer);
+  }
 }

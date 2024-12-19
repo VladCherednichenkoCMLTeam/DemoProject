@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { QdrantClient } from '@qdrant/qdrant-js';
 import { v4 as uuidv4 } from 'uuid';
 
-export const chunkSize = 512;
+export const chunkSize = 1536;
 
 @Injectable()
 export class QdrantService implements OnModuleInit {
@@ -41,7 +41,7 @@ export class QdrantService implements OnModuleInit {
     await this.client.upsert(this.collectionName, { points });
   }
 
-  async search(queryVector: number[], limit = 5) {
+  async search(queryVector: number[], limit = 15) {
     return this.client.search(this.collectionName, {
       vector: queryVector,
       limit,
